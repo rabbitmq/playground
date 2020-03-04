@@ -1,63 +1,28 @@
 # vim:sw=2:et:
 
-# Use Ubuntu Trusty to have access to Elixir.
-#dist: trusty
-#group: beta
-sudo: required
-
-language: erlang
-otp_release:
-  - '19.0'
-addons:
-  apt:
-    #sources:
-    #  - sourceline: deb https://packages.erlang-solutions.com/ubuntu precise contrib
-    #    key_url: https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc
-    #packages:
-    #  - elixir
-    #  - esl-erlang
-    #- gettext
-    #- libcurl4-openssl-dev
-    #- libicu-dev
-    #- libssl-dev
-    #- libunwind8
-    #- zlib1g
-install:
-  #- apt-cache search libunwind
-  #- export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
-  #- curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.sh | bash /dev/stdin --version "latest" --install-dir "$DOTNET_INSTALL_DIR"
-  #- export PATH="$DOTNET_INSTALL_DIR:$PATH"
-
-before_script:
-  - "env | sort"
-  #- erl -version
-  #- make --version
-  #- apt-cache policy make
-  #- '(dpkg -l | grep elixir) || :'
-  #- '(dpkg -l | grep mix) || :'
-  #- apt-cache policy elixir
-
-script:
-  - ':'
-  #- kiex install 1.3.4
-  #- kiex list
-  #- kiex default 1.3.4
-  #- echo YES | kiex implode
-  #- ls -l $(which elixir)
-  #- elixir --version
-  #- ls -l $(which mix)
-  #- mix --version
-  #- mix local.hex --force
-  #- mvn --version
-  #- git log --oneline --graph --decorate --all
-  #- make
-
-cache:
-  apt: true
-
+os: linux
+dist: xenial
+language: elixir
 notifications:
   email:
-    recipients:
-      - alerts@rabbitmq.com
-    on_success: always
-    on_failure: always
+    on_success: never
+    on_failure: never
+cache:
+  apt: true
+env:
+  global:
+    # $base_rmq_ref is used by rabbitmq-components.mk to select the
+    # appropriate branch for dependencies.
+    - base_rmq_ref=v3.8.x
+
+elixir:
+  - '1.9'
+otp_release:
+  - '21.3'
+
+install:
+  - true
+
+script:
+  - |
+    echo "Branch: ${TRAVIS_TAG:-${TRAVIS_BRANCH}}"
